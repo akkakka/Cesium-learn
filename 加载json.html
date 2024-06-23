@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<script src="/lib/Cesium-1.92/Build/Cesium/Cesium.js"></script>
+        <link href="/lib/Cesium-1.92/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+	</head>
+	<body>
+		<p><input type="checkbox" id="baselayer" name="baselayer" value="baselayer" checked="true" />Json图层 </p>
+		<div id="cesiumContainer"></div>
+		<script>
+			Cesium.Ion.defaultAccessToken ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5MjMyYjZiMC1lZmY1LTQzNmEtODg1NS01NmQzMmE2NWY2ZjMiLCJpZCI6NDQ1MSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0MDg4NTM2Mn0.7OzWWlmUmJv_EJo0RFpuiL2G_KLgZBENAAXOgU1O1qM';
+			var viewer = new Cesium.Viewer('cesiumContainer');
+			var geojsonOptions = {
+				clampToGround: true
+			};
+			var dataPromise = Cesium.GeoJsonDataSource.load('zg.json', geojsonOptions);
+
+			dataPromise.then(function(dataSource) {
+				viewer.dataSources.add(dataSource);
+				viewer.flyTo(dataSource);
+				SetSymbol(dataSource);
+			});
+
+			function SetSymbol(dataSource) {
+				var neighborhoodEntities = dataSource.entities.values;
+				for (var i = 0; i < neighborhoodEntities.length; i++) {
+					var entity = neighborhoodEntities[i];
+					if (Cesium.defined(entity.polygon)) {
+						entity.polygon.material = Cesium.Color.fromRandom({
+							alpha: 0.4
+						});
+
+				
+
+						
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
+
